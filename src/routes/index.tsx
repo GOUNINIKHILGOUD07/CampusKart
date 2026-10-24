@@ -39,7 +39,11 @@ export const Route = createFileRoute("/")({
 
 const CATEGORY_TILES = [
   { icon: BookOpen, name: "Textbooks", blurb: "Syllabus books from seniors at half the price" },
-  { icon: GraduationCap, name: "Notes & Lab Records", blurb: "Handouts, assignments and record files" },
+  {
+    icon: GraduationCap,
+    name: "Notes & Lab Records",
+    blurb: "Handouts, assignments and record files",
+  },
   { icon: Sparkles, name: "Electronics", blurb: "Calculators, speakers, kindles and more" },
   { icon: Handshake, name: "Hostel Essentials", blurb: "Table fans, lamps, storage — pre-loved" },
   { icon: Tag, name: "Cycles & Transport", blurb: "Cycles and scooters staying on campus" },
@@ -81,8 +85,9 @@ function Index() {
             <span className="text-primary">someone's already selling it</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            CampusKart is the student marketplace for your college. Buy second-hand textbooks, notes, lab records and
-            electronics from seniors who are done with them — and sell yours to juniors when you're done.
+            CampusKart is the student marketplace for your college. Buy second-hand textbooks,
+            notes, lab records and electronics from seniors who are done with them — and sell yours
+            to juniors when you're done.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {signedIn ? (
@@ -102,7 +107,8 @@ function Index() {
               <>
                 <Button asChild size="lg">
                   <Link to="/auth">
-                    Get started — it's free <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+                    Get started — it's free{" "}
+                    <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
@@ -128,7 +134,10 @@ function Index() {
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {STEPS.map((s, i) => (
             <div key={s.title} className="relative rounded-xl border bg-card p-6">
-              <span className="absolute right-5 top-5 text-3xl font-extrabold text-secondary-foreground/20" aria-hidden="true">
+              <span
+                className="absolute right-5 top-5 text-3xl font-extrabold text-secondary-foreground/20"
+                aria-hidden="true"
+              >
                 {i + 1}
               </span>
               <div className="w-fit rounded-lg bg-secondary p-2.5">
@@ -144,9 +153,12 @@ function Index() {
       {/* Categories */}
       <section className="border-y bg-secondary/30" aria-label="What you can buy and sell">
         <div className="mx-auto max-w-5xl px-4 py-14">
-          <h2 className="text-center text-2xl font-bold tracking-tight">What changes hands on CampusKart</h2>
+          <h2 className="text-center text-2xl font-bold tracking-tight">
+            What changes hands on CampusKart
+          </h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-sm text-muted-foreground">
-            The things every student needs at the start of a semester — at prices every student can afford.
+            The things every student needs at the start of a semester — at prices every student can
+            afford.
           </p>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORY_TILES.map((c) => (
@@ -177,8 +189,9 @@ function Index() {
             </div>
             <h3 className="mt-4 text-base font-bold tracking-tight">A marketplace you can trust</h3>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              You deal only with students on your campus. Every listing can be reported to moderators, and accounts
-              that break the rules are banned. No middlemen, no hidden charges.
+              You deal only with students on your campus. Every listing can be reported to
+              moderators, and accounts that break the rules are banned. No middlemen, no hidden
+              charges.
             </p>
           </div>
           <div className="rounded-xl border bg-card p-6">
@@ -187,20 +200,25 @@ function Index() {
             </div>
             <h3 className="mt-4 text-base font-bold tracking-tight">Zero fees, real savings</h3>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              CampusKart never takes a cut. Sellers pocket the full price, buyers pay student prices, and payments
-              happen in person — cash or UPI, your choice.
+              CampusKart never takes a cut. Sellers pocket the full price, buyers pay student
+              prices, and payments happen in person — cash or UPI, your choice.
             </p>
           </div>
         </div>
       </section>
 
       {/* Closing CTA */}
-      <section className="border-t bg-primary py-14 text-primary-foreground" aria-label="Get started">
+      <section
+        className="border-t bg-primary py-14 text-primary-foreground"
+        aria-label="Get started"
+      >
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Ready to clear that shelf?</h2>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Ready to clear that shelf?
+          </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-primary-foreground/80 sm:text-base">
-            Join your campusmates on CampusKart. Post your first listing today, or find the textbook you've been
-            hunting for — from a senior who used it last semester.
+            Join your campusmates on CampusKart. Post your first listing today, or find the textbook
+            you've been hunting for — from a senior who used it last semester.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             {signedIn ? (
@@ -216,7 +234,12 @@ function Index() {
                 </Link>
               </Button>
             )}
-            <Button asChild size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
               <Link to="/browse">Browse first</Link>
             </Button>
           </div>

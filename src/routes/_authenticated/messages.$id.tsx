@@ -18,7 +18,10 @@ export const Route = createFileRoute("/_authenticated/messages/$id")({
       { title: "Chat · CampusKart" },
       { name: "description", content: "Your conversation on CampusKart, the student marketplace." },
       { property: "og:title", content: "Chat · CampusKart" },
-      { property: "og:description", content: "Your conversation on CampusKart, the student marketplace." },
+      {
+        property: "og:description",
+        content: "Your conversation on CampusKart, the student marketplace.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -51,7 +54,11 @@ function ConversationPage() {
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const { data: conversation, isPending, error } = useQuery({
+  const {
+    data: conversation,
+    isPending,
+    error,
+  } = useQuery({
     enabled: !!userId,
     queryKey: ["conversation", id, userId],
     queryFn: async () => {
@@ -84,12 +91,16 @@ function ConversationPage() {
 
   const coverPath = conversation?.product?.images?.[0]?.url ?? null;
   const urlMap = useSignedImageUrls(coverPath ? [coverPath] : []);
-  const coverUrl = coverPath ? urlMap[coverPath] ?? null : null;
+  const coverUrl = coverPath ? (urlMap[coverPath] ?? null) : null;
 
-  const isParticipant = !!conversation && (conversation.buyer_id === userId || conversation.seller_id === userId);
+  const isParticipant =
+    !!conversation && (conversation.buyer_id === userId || conversation.seller_id === userId);
   const otherName = useMemo(() => {
     if (!conversation) return "";
-    return (conversation.buyer_id === userId ? conversation.seller : conversation.buyer)?.display_name ?? "a student";
+    return (
+      (conversation.buyer_id === userId ? conversation.seller : conversation.buyer)?.display_name ??
+      "a student"
+    );
   }, [conversation, userId]);
 
   // Realtime: append new messages to the thread without a refresh.
@@ -99,7 +110,12 @@ function ConversationPage() {
       .channel(`messages-${id}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${id}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `conversation_id=eq.${id}`,
+        },
         () => {
           queryClient.invalidateQueries({ queryKey: ["messages", id] });
           queryClient.invalidateQueries({ queryKey: ["conversations"] });
@@ -118,7 +134,10 @@ function ConversationPage() {
       .filter((m) => m.sender_id !== userId && !m.read_at)
       .map((m) => m.id);
     if (unreadIds.length === 0) return;
-    void supabase.from("messages").update({ read_at: new Date().toISOString() }).in("id", unreadIds);
+    void supabase
+      .from("messages")
+      .update({ read_at: new Date().toISOString() })
+      .in("id", unreadIds);
   }, [messages, userId, isParticipant]);
 
   useEffect(() => {
@@ -156,7 +175,9 @@ function ConversationPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <h1 className="text-xl font-semibold">This conversation isn't available</h1>
-        <p className="mt-2 text-sm text-muted-foreground">It may have been removed, or it isn't yours.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          It may have been removed, or it isn't yours.
+        </p>
         <Button asChild variant="outline" className="mt-4">
           <Link to="/messages">Back to messages</Link>
         </Button>
@@ -165,7 +186,10 @@ function ConversationPage() {
   }
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col px-4 py-6" style={{ height: "calc(100vh - 8rem)" }}>
+    <div
+      className="mx-auto flex max-w-3xl flex-col px-4 py-6"
+      style={{ height: "calc(100vh - 8rem)" }}
+    >
       <header className="flex items-center gap-3 rounded-lg border bg-card p-3">
         <Button asChild variant="ghost" size="icon" aria-label="Back to messages">
           <Link to="/messages">
@@ -178,7 +202,9 @@ function ConversationPage() {
           <div className="h-10 w-10 shrink-0 rounded-md bg-secondary" />
         )}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">{conversation.product?.title ?? "A listing"}</p>
+          <p className="truncate text-sm font-semibold">
+            {conversation.product?.title ?? "A listing"}
+          </p>
           <p className="text-xs text-muted-foreground">Chat with {otherName}</p>
         </div>
         {conversation.product && (
@@ -206,8 +232,13 @@ function ConversationPage() {
                 }`}
               >
                 <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                <p className={`mt-1 text-[10px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                  {new Date(m.created_at).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
+                <p
+                  className={`mt-1 text-[10px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}
+                >
+                  {new Date(m.created_at).toLocaleTimeString("en-IN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
               </div>
             </div>
@@ -224,7 +255,12 @@ function ConversationPage() {
           maxLength={2000}
           aria-label="Message text"
         />
-        <Button type="submit" size="icon" disabled={sending || draft.trim() === ""} aria-label="Send message">
+        <Button
+          type="submit"
+          size="icon"
+          disabled={sending || draft.trim() === ""}
+          aria-label="Send message"
+        >
           <Send className="h-4 w-4" aria-hidden="true" />
         </Button>
       </form>

@@ -12,9 +12,15 @@ export const Route = createFileRoute("/help")({
   head: () => ({
     meta: [
       { title: "Help & FAQ · CampusKart" },
-      { name: "description", content: "Answers to common questions about buying and selling on CampusKart." },
+      {
+        name: "description",
+        content: "Answers to common questions about buying and selling on CampusKart.",
+      },
       { property: "og:title", content: "Help & FAQ · CampusKart" },
-      { property: "og:description", content: "Answers to common questions about buying and selling on CampusKart." },
+      {
+        property: "og:description",
+        content: "Answers to common questions about buying and selling on CampusKart.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

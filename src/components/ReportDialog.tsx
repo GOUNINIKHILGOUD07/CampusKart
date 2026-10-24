@@ -86,10 +86,14 @@ export function ReportDialog({
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="report-reason">Reason</Label>
                 <Select value={reason} onValueChange={setReason} required>
-                  <SelectTrigger id="report-reason"><SelectValue placeholder="Select a reason" /></SelectTrigger>
+                  <SelectTrigger id="report-reason">
+                    <SelectValue placeholder="Select a reason" />
+                  </SelectTrigger>
                   <SelectContent>
                     {REPORT_REASONS.map((r) => (
-                      <SelectItem key={r} value={r}>{r}</SelectItem>
+                      <SelectItem key={r} value={r}>
+                        {r}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -106,7 +110,9 @@ export function ReportDialog({
                 />
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
                 <Button type="submit" disabled={!reason || submitting}>
                   {submitting ? "Submitting…" : "Submit report"}
                 </Button>
@@ -117,7 +123,9 @@ export function ReportDialog({
           <>
             <DialogHeader>
               <DialogTitle>Sign in required</DialogTitle>
-              <DialogDescription>You need a CampusKart account to submit a report.</DialogDescription>
+              <DialogDescription>
+                You need a CampusKart account to submit a report.
+              </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <Button asChild>

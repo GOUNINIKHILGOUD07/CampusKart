@@ -33,8 +33,10 @@ export const Route = createFileRoute("/browse")({
     } = {};
     if (typeof search["q"] === "string") parsed.q = search["q"];
     if (typeof search["category"] === "string") parsed.category = search["category"];
-    if (typeof search["min"] === "string" && search["min"] !== "") parsed.min = Number(search["min"]);
-    if (typeof search["max"] === "string" && search["max"] !== "") parsed.max = Number(search["max"]);
+    if (typeof search["min"] === "string" && search["min"] !== "")
+      parsed.min = Number(search["min"]);
+    if (typeof search["max"] === "string" && search["max"] !== "")
+      parsed.max = Number(search["max"]);
     if (typeof search["condition"] === "string") parsed.condition = search["condition"];
     if (search["sold"] === "1") parsed.sold = "1";
     if (typeof search["sort"] === "string") parsed.sort = search["sort"];
@@ -43,9 +45,16 @@ export const Route = createFileRoute("/browse")({
   head: () => ({
     meta: [
       { title: "Browse products · CampusKart" },
-      { name: "description", content: "Search textbooks, notes, lab records, stationery and electronics listed by students." },
+      {
+        name: "description",
+        content:
+          "Search textbooks, notes, lab records, stationery and electronics listed by students.",
+      },
       { property: "og:title", content: "Browse products · CampusKart" },
-      { property: "og:description", content: "Find affordable campus essentials listed by students." },
+      {
+        property: "og:description",
+        content: "Find affordable campus essentials listed by students.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -74,10 +83,15 @@ function useProducts(search: ReturnType<typeof Route.useSearch>) {
     queryFn: async () => {
       let query = supabase
         .from("products")
-        .select("id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)")
-        .order(search.sort === "price-asc" || search.sort === "price-desc" ? "price" : "created_at", {
-          ascending: search.sort !== "price-desc",
-        })
+        .select(
+          "id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)",
+        )
+        .order(
+          search.sort === "price-asc" || search.sort === "price-desc" ? "price" : "created_at",
+          {
+            ascending: search.sort !== "price-desc",
+          },
+        )
         .limit(60);
 
       if (search.sort === "price-asc" || search.sort === "price-desc") {
@@ -86,34 +100,49 @@ function useProducts(search: ReturnType<typeof Route.useSearch>) {
       if (!search.sold) query = query.eq("is_sold", false);
       if (search.q) query = query.or(`title.ilike.%${search.q}%,description.ilike.%${search.q}%`);
       if (search.category) {
-        const cat = await supabase.from("categories").select("id").eq("slug", search.category).maybeSingle();
+        const cat = await supabase
+          .from("categories")
+          .select("id")
+          .eq("slug", search.category)
+          .maybeSingle();
         query = query.eq("category_id", cat.data?.id ?? "00000000-0000-0000-0000-000000000000");
       }
-      if (typeof search.min === "number" && !Number.isNaN(search.min)) query = query.gte("price", search.min);
-      if (typeof search.max === "number" && !Number.isNaN(search.max)) query = query.lte("price", search.max);
+      if (typeof search.min === "number" && !Number.isNaN(search.min))
+        query = query.gte("price", search.min);
+      if (typeof search.max === "number" && !Number.isNaN(search.max))
+        query = query.lte("price", search.max);
       if (search.condition) {
-        const list = search.condition.split(",").filter((c: string) => (CONDITIONS as readonly string[]).includes(c));
+        const list = search.condition
+          .split(",")
+          .filter((c: string) => (CONDITIONS as readonly string[]).includes(c));
         if (list.length > 0) query = query.in("condition", list);
       }
 
       const { data, error } = await query;
-      const remoteList = error ? [] : (data ?? []).map((row) => {
-        const r = row as unknown as {
-          id: string; title: string; price: number; condition: string; is_sold: boolean; created_at: string;
-          category: { name: string } | null;
-          images: { url: string }[];
-        };
-        return {
-          id: r.id,
-          title: r.title,
-          price: r.price,
-          condition: r.condition,
-          is_sold: r.is_sold,
-          created_at: r.created_at,
-          category_name: r.category?.name ?? null,
-          image_path: r.images?.[0]?.url ?? null,
-        } satisfies ProductCardData;
-      });
+      const remoteList = error
+        ? []
+        : (data ?? []).map((row) => {
+            const r = row as unknown as {
+              id: string;
+              title: string;
+              price: number;
+              condition: string;
+              is_sold: boolean;
+              created_at: string;
+              category: { name: string } | null;
+              images: { url: string }[];
+            };
+            return {
+              id: r.id,
+              title: r.title,
+              price: r.price,
+              condition: r.condition,
+              is_sold: r.is_sold,
+              created_at: r.created_at,
+              category_name: r.category?.name ?? null,
+              image_path: r.images?.[0]?.url ?? null,
+            } satisfies ProductCardData;
+          });
 
       const localList = (await getSharedProducts()).map((p) => ({
         id: p.id,
@@ -140,7 +169,16 @@ function BrowsePage() {
   const [minInput, setMinInput] = useState(search.min != null ? String(search.min) : "");
   const [maxInput, setMaxInput] = useState(search.max != null ? String(search.max) : "");
   const hasFilters = useMemo(
-    () => !!(search.q || search.category || search.condition || search.min != null || search.max != null || search.sold || search.sort),
+    () =>
+      !!(
+        search.q ||
+        search.category ||
+        search.condition ||
+        search.min != null ||
+        search.max != null ||
+        search.sold ||
+        search.sort
+      ),
     [search],
   );
 
@@ -160,7 +198,9 @@ function BrowsePage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Browse products</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {isPending ? "Loading listings…" : `${products?.length ?? 0} listing${(products?.length ?? 0) === 1 ? "" : "s"} found`}
+            {isPending
+              ? "Loading listings…"
+              : `${products?.length ?? 0} listing${(products?.length ?? 0) === 1 ? "" : "s"} found`}
           </p>
         </div>
       </div>
@@ -182,11 +222,15 @@ function BrowsePage() {
               value={search.category ?? "all"}
               onValueChange={(v) => patch({ category: v === "all" ? undefined : v })}
             >
-              <SelectTrigger id="filter-category"><SelectValue /></SelectTrigger>
+              <SelectTrigger id="filter-category">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All categories</SelectItem>
                 {(categories ?? []).map((c) => (
-                  <SelectItem key={c.id} value={c.slug}>{c.name}</SelectItem>
+                  <SelectItem key={c.id} value={c.slug}>
+                    {c.name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -198,11 +242,15 @@ function BrowsePage() {
               value={search.condition ?? "all"}
               onValueChange={(v) => patch({ condition: v === "all" ? undefined : v })}
             >
-              <SelectTrigger id="filter-condition"><SelectValue /></SelectTrigger>
+              <SelectTrigger id="filter-condition">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Any condition</SelectItem>
                 {CONDITIONS.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -211,13 +259,29 @@ function BrowsePage() {
           <div className="flex flex-col gap-1.5">
             <Label>Price (₹)</Label>
             <div className="flex items-center gap-2">
-              <Input id="filter-min" type="number" min={0} placeholder="Min" value={minInput}
+              <Input
+                id="filter-min"
+                type="number"
+                min={0}
+                placeholder="Min"
+                value={minInput}
                 onChange={(e) => setMinInput(e.target.value)}
-                onBlur={() => patch({ min: minInput === "" ? undefined : Math.max(0, Number(minInput)) })} />
+                onBlur={() =>
+                  patch({ min: minInput === "" ? undefined : Math.max(0, Number(minInput)) })
+                }
+              />
               <span className="text-muted-foreground">–</span>
-              <Input id="filter-max" type="number" min={0} placeholder="Max" value={maxInput}
+              <Input
+                id="filter-max"
+                type="number"
+                min={0}
+                placeholder="Max"
+                value={maxInput}
                 onChange={(e) => setMaxInput(e.target.value)}
-                onBlur={() => patch({ max: maxInput === "" ? undefined : Math.max(0, Number(maxInput)) })} />
+                onBlur={() =>
+                  patch({ max: maxInput === "" ? undefined : Math.max(0, Number(maxInput)) })
+                }
+              />
             </div>
           </div>
 
@@ -227,13 +291,20 @@ function BrowsePage() {
               checked={search.sold === "1"}
               onCheckedChange={(v) => patch({ sold: v ? "1" : undefined })}
             />
-            <Label htmlFor="filter-sold" className="text-sm font-normal">Include sold items</Label>
+            <Label htmlFor="filter-sold" className="text-sm font-normal">
+              Include sold items
+            </Label>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="filter-sort">Sort by</Label>
-            <Select value={search.sort ?? "newest"} onValueChange={(v) => patch({ sort: v === "newest" ? undefined : v })}>
-              <SelectTrigger id="filter-sort"><SelectValue /></SelectTrigger>
+            <Select
+              value={search.sort ?? "newest"}
+              onValueChange={(v) => patch({ sort: v === "newest" ? undefined : v })}
+            >
+              <SelectTrigger id="filter-sort">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="newest">Newest listings</SelectItem>
                 <SelectItem value="price-asc">Price: low to high</SelectItem>
@@ -271,7 +342,11 @@ function BrowsePage() {
               }
               action={
                 <div className="flex gap-2">
-                  {hasFilters && <Button variant="outline" onClick={reset}>Clear filters</Button>}
+                  {hasFilters && (
+                    <Button variant="outline" onClick={reset}>
+                      Clear filters
+                    </Button>
+                  )}
                   <Button asChild>
                     <Link to="/sell">Sell an Item</Link>
                   </Button>

@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -113,7 +113,9 @@ function SettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-      <p className="mt-1 text-sm text-muted-foreground">How buyers and sellers see you on CampusKart.</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        How buyers and sellers see you on CampusKart.
+      </p>
 
       <div className="mt-6 flex items-center gap-4 rounded-lg border bg-card p-4">
         <Avatar className="h-16 w-16">
@@ -133,8 +135,15 @@ function SettingsPage() {
               e.target.value = "";
             }}
           />
-          <Button variant="outline" size="sm" onClick={() => fileInput.current?.click()} disabled={uploading}>
-            {uploading && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" aria-hidden="true" />}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInput.current?.click()}
+            disabled={uploading}
+          >
+            {uploading && (
+              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            )}
             Change avatar
           </Button>
           <p className="mt-1 text-xs text-muted-foreground">Square images look best, up to 4 MB.</p>

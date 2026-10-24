@@ -24,7 +24,7 @@ export function ProductCard({
   className?: string;
 }) {
   const urlMap = useSignedImageUrls(product.image_path ? [product.image_path] : []);
-  const imageUrl = product.image_path ? urlMap[product.image_path] ?? null : null;
+  const imageUrl = product.image_path ? (urlMap[product.image_path] ?? null) : null;
 
   return (
     <Link

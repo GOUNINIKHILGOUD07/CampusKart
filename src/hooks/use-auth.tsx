@@ -60,8 +60,13 @@ export function AuthProvider({
     }
 
     const [{ data: profileData }, { data: roleData }] = await Promise.all([
-      supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
-      supabase.from("user_roles").select("role").eq("user_id", uid).eq("role", "admin").maybeSingle(),
+      supabase.from("profiles").select("*").eq("id", uid!).maybeSingle(),
+      supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", uid!)
+        .eq("role", "admin")
+        .maybeSingle(),
     ]);
 
     let resolvedProfile = profileData ?? null;
@@ -70,7 +75,7 @@ export function AuthProvider({
         data: { user },
       } = await supabase.auth.getUser();
       const fallbackName =
-        user?.user_metadata?.display_name || user?.email?.split("@")[0] || "Student";
+        user?.user_metadata?.["display_name"] || user?.email?.split("@")[0] || "Student";
       const { data: createdProfile } = await supabase
         .from("profiles")
         .upsert({ id: uid!, display_name: fallbackName })

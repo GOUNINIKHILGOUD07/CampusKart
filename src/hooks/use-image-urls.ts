@@ -45,5 +45,5 @@ export function useSignedImageUrls(paths: string[] | null | undefined): Record<s
 
 export function useSignedImageUrl(path: string | null | undefined): string | null {
   const map = useSignedImageUrls(path ? [path] : []);
-  return path ? map[path] ?? null : null;
+  return path ? (map[path] ?? null) : null;
 }

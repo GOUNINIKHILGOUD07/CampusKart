@@ -45,14 +45,23 @@ function useMyListings(userId: string | null) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("id, title, description, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)")
+        .select(
+          "id, title, description, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)",
+        )
         .eq("seller_id", userId!)
         .order("created_at", { ascending: false })
         .limit(100);
 
       const remoteList = (data ?? []).map((r) => {
-        const row = r as unknown as OwnListing & { category: { name: string } | null; images: { url: string }[] };
-        return { ...row, category_name: row.category?.name ?? null, image_path: row.images?.[0]?.url ?? null };
+        const row = r as unknown as OwnListing & {
+          category: { name: string } | null;
+          images: { url: string }[];
+        };
+        return {
+          ...row,
+          category_name: row.category?.name ?? null,
+          image_path: row.images?.[0]?.url ?? null,
+        };
       }) as OwnListing[];
 
       const localShared = (await getSharedProducts())
@@ -83,7 +92,10 @@ function DashboardPage() {
   const sold = (listings ?? []).filter((l) => l.is_sold);
 
   async function toggleSold(listing: OwnListing) {
-    const { error } = await supabase.from("products").update({ is_sold: !listing.is_sold }).eq("id", listing.id);
+    const { error } = await supabase
+      .from("products")
+      .update({ is_sold: !listing.is_sold })
+      .eq("id", listing.id);
     if (error) {
       toast.error("Could not update the listing.");
       return;
@@ -107,7 +119,9 @@ function DashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">My listings</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Everything you've posted on CampusKart.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Everything you've posted on CampusKart.
+          </p>
         </div>
         <Button asChild>
           <Link to="/sell">Sell an item</Link>
@@ -115,9 +129,21 @@ function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-3" aria-label="Summary">
-        <StatCard icon={<Tag className="h-4 w-4" aria-hidden="true" />} label="Active listings" value={active.length} />
-        <StatCard icon={<PackageCheck className="h-4 w-4" aria-hidden="true" />} label="Sold" value={sold.length} />
-        <StatCard icon={<Package className="h-4 w-4" aria-hidden="true" />} label="Total listings" value={listings?.length ?? 0} />
+        <StatCard
+          icon={<Tag className="h-4 w-4" aria-hidden="true" />}
+          label="Active listings"
+          value={active.length}
+        />
+        <StatCard
+          icon={<PackageCheck className="h-4 w-4" aria-hidden="true" />}
+          label="Sold"
+          value={sold.length}
+        />
+        <StatCard
+          icon={<Package className="h-4 w-4" aria-hidden="true" />}
+          label="Total listings"
+          value={listings?.length ?? 0}
+        />
       </div>
 
       <section className="mt-8" aria-label="All listings">
@@ -134,13 +160,22 @@ function DashboardPage() {
         ) : listings && listings.length > 0 ? (
           <div className="mt-4 flex flex-col gap-3">
             {listings.map((l) => (
-              <article key={l.id} className="flex flex-wrap items-center gap-3 rounded-lg border bg-card p-3">
+              <article
+                key={l.id}
+                className="flex flex-wrap items-center gap-3 rounded-lg border bg-card p-3"
+              >
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="truncate text-sm font-semibold">{l.title}</p>
-                    {l.is_sold ? <Badge variant="destructive">Sold</Badge> : <Badge variant="secondary">Active</Badge>}
+                    {l.is_sold ? (
+                      <Badge variant="destructive">Sold</Badge>
+                    ) : (
+                      <Badge variant="secondary">Active</Badge>
+                    )}
                   </div>
-                  <p className="mt-0.5 text-sm font-bold text-primary">₹{l.price.toLocaleString("en-IN")}</p>
+                  <p className="mt-0.5 text-sm font-bold text-primary">
+                    ₹{l.price.toLocaleString("en-IN")}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button asChild variant="outline" size="sm">
@@ -162,12 +197,15 @@ function DashboardPage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete this listing?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This permanently removes "{l.title}" and its photos. This cannot be undone.
+                          This permanently removes "{l.title}" and its photos. This cannot be
+                          undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteListing(l)}>Delete listing</AlertDialogAction>
+                        <AlertDialogAction onClick={() => deleteListing(l)}>
+                          Delete listing
+                        </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

@@ -42,12 +42,6 @@ export function SafeImage({
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      onError={() => setFailed(true)}
-      className={className}
-    />
+    <img src={src} alt={alt} loading="lazy" onError={() => setFailed(true)} className={className} />
   );
 }

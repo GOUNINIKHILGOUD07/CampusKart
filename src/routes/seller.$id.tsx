@@ -14,9 +14,15 @@ export const Route = createFileRoute("/seller/$id")({
   head: () => ({
     meta: [
       { title: "Seller profile · CampusKart" },
-      { name: "description", content: "View this seller's active listings and reviews on CampusKart." },
+      {
+        name: "description",
+        content: "View this seller's active listings and reviews on CampusKart.",
+      },
       { property: "og:title", content: "Seller profile · CampusKart" },
-      { property: "og:description", content: "View this seller's active listings and reviews on CampusKart." },
+      {
+        property: "og:description",
+        content: "View this seller's active listings and reviews on CampusKart.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
@@ -63,13 +69,22 @@ function SellerPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)")
+        .select(
+          "id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)",
+        )
         .eq("seller_id", id)
         .order("created_at", { ascending: false })
         .limit(24);
       return (data ?? []).map((r) => {
-        const row = r as unknown as ProductCardData & { category: { name: string } | null; images: { url: string }[] };
-        return { ...row, category_name: row.category?.name ?? null, image_path: row.images?.[0]?.url ?? null };
+        const row = r as unknown as ProductCardData & {
+          category: { name: string } | null;
+          images: { url: string }[];
+        };
+        return {
+          ...row,
+          category_name: row.category?.name ?? null,
+          image_path: row.images?.[0]?.url ?? null,
+        };
       }) as ProductCardData[];
     },
   });
@@ -80,7 +95,9 @@ function SellerPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("reviews")
-        .select("id, rating, comment, created_at, reviewer:profiles!reviews_reviewer_id_fkey(id, display_name, avatar_url)")
+        .select(
+          "id, rating, comment, created_at, reviewer:profiles!reviews_reviewer_id_fkey(id, display_name, avatar_url)",
+        )
         .eq("seller_id", id)
         .order("created_at", { ascending: false })
         .limit(20);
@@ -111,8 +128,13 @@ function SellerPage() {
     return (
       <div className="mx-auto max-w-4xl px-4 py-16 text-center">
         <h1 className="text-xl font-semibold">This profile doesn't exist</h1>
-        <p className="mt-2 text-sm text-muted-foreground">The student may have deleted their account.</p>
-        <Link to="/browse" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
+        <p className="mt-2 text-sm text-muted-foreground">
+          The student may have deleted their account.
+        </p>
+        <Link
+          to="/browse"
+          className="mt-4 inline-block text-sm font-medium text-primary hover:underline"
+        >
           Browse products
         </Link>
       </div>
@@ -128,7 +150,9 @@ function SellerPage() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <header className="flex flex-wrap items-start gap-4 rounded-lg border bg-card p-5">
         <Avatar className="h-16 w-16">
-          {profile.avatar_url && <AvatarImage src={profile.avatar_url} alt={profile.display_name} />}
+          {profile.avatar_url && (
+            <AvatarImage src={profile.avatar_url} alt={profile.display_name} />
+          )}
           <AvatarFallback className="bg-secondary text-lg font-semibold">
             {profile.display_name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
@@ -148,13 +172,15 @@ function SellerPage() {
             )}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            {profile.college ? `${profile.college} · ` : ""}Member since {formatDate(profile.created_at)}
+            {profile.college ? `${profile.college} · ` : ""}Member since{" "}
+            {formatDate(profile.created_at)}
           </p>
           {profile.bio && <p className="mt-2 text-sm text-foreground/90">{profile.bio}</p>}
           {avgRating != null && (
             <p className="mt-2 flex items-center gap-1 text-sm font-medium">
               <Star className="h-4 w-4 fill-primary text-primary" aria-hidden="true" />
-              {avgRating.toFixed(1)} ({reviews?.length ?? 0} review{(reviews?.length ?? 0) === 1 ? "" : "s"})
+              {avgRating.toFixed(1)} ({reviews?.length ?? 0} review
+              {(reviews?.length ?? 0) === 1 ? "" : "s"})
             </p>
           )}
         </div>
@@ -189,13 +215,18 @@ function SellerPage() {
               <article key={r.id} className="rounded-lg border bg-card p-4">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-7 w-7">
-                    {r.reviewer?.avatar_url && <AvatarImage src={r.reviewer.avatar_url} alt={r.reviewer.display_name} />}
+                    {r.reviewer?.avatar_url && (
+                      <AvatarImage src={r.reviewer.avatar_url} alt={r.reviewer.display_name} />
+                    )}
                     <AvatarFallback className="bg-secondary text-[10px] font-semibold">
                       {r.reviewer?.display_name.slice(0, 2).toUpperCase() ?? "S"}
                     </AvatarFallback>
                   </Avatar>
                   <p className="text-sm font-medium">{r.reviewer?.display_name ?? "A student"}</p>
-                  <span className="ml-auto flex items-center gap-0.5" aria-label={`${r.rating} out of 5 stars`}>
+                  <span
+                    className="ml-auto flex items-center gap-0.5"
+                    aria-label={`${r.rating} out of 5 stars`}
+                  >
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}

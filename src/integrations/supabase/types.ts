@@ -1,568 +1,556 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.18"
-  }
+    PostgrestVersion: "14.18";
+  };
   public: {
     Tables: {
       categories: {
         Row: {
-          id: string
-          name: string
-          position: number
-          slug: string
-        }
+          id: string;
+          name: string;
+          position: number;
+          slug: string;
+        };
         Insert: {
-          id?: string
-          name: string
-          position?: number
-          slug: string
-        }
+          id?: string;
+          name: string;
+          position?: number;
+          slug: string;
+        };
         Update: {
-          id?: string
-          name?: string
-          position?: number
-          slug?: string
-        }
-        Relationships: []
-      }
+          id?: string;
+          name?: string;
+          position?: number;
+          slug?: string;
+        };
+        Relationships: [];
+      };
       conversations: {
         Row: {
-          buyer_id: string
-          created_at: string
-          id: string
-          product_id: string
-          seller_id: string
-        }
+          buyer_id: string;
+          created_at: string;
+          id: string;
+          product_id: string;
+          seller_id: string;
+        };
         Insert: {
-          buyer_id: string
-          created_at?: string
-          id?: string
-          product_id: string
-          seller_id: string
-        }
+          buyer_id: string;
+          created_at?: string;
+          id?: string;
+          product_id: string;
+          seller_id: string;
+        };
         Update: {
-          buyer_id?: string
-          created_at?: string
-          id?: string
-          product_id?: string
-          seller_id?: string
-        }
+          buyer_id?: string;
+          created_at?: string;
+          id?: string;
+          product_id?: string;
+          seller_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "conversations_buyer_id_fkey"
-            columns: ["buyer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "conversations_buyer_id_fkey";
+            columns: ["buyer_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "conversations_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            foreignKeyName: "conversations_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "conversations_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "conversations_seller_id_fkey";
+            columns: ["seller_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       messages: {
         Row: {
-          body: string
-          conversation_id: string
-          created_at: string
-          id: string
-          read_at: string | null
-          sender_id: string
-        }
+          body: string;
+          conversation_id: string;
+          created_at: string;
+          id: string;
+          read_at: string | null;
+          sender_id: string;
+        };
         Insert: {
-          body: string
-          conversation_id: string
-          created_at?: string
-          id?: string
-          read_at?: string | null
-          sender_id: string
-        }
+          body: string;
+          conversation_id: string;
+          created_at?: string;
+          id?: string;
+          read_at?: string | null;
+          sender_id: string;
+        };
         Update: {
-          body?: string
-          conversation_id?: string
-          created_at?: string
-          id?: string
-          read_at?: string | null
-          sender_id?: string
-        }
+          body?: string;
+          conversation_id?: string;
+          created_at?: string;
+          id?: string;
+          read_at?: string | null;
+          sender_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "messages_conversation_id_fkey"
-            columns: ["conversation_id"]
-            isOneToOne: false
-            referencedRelation: "conversations"
-            referencedColumns: ["id"]
+            foreignKeyName: "messages_conversation_id_fkey";
+            columns: ["conversation_id"];
+            isOneToOne: false;
+            referencedRelation: "conversations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "messages_sender_id_fkey";
+            columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       notifications: {
         Row: {
-          body: string | null
-          created_at: string
-          id: string
-          is_read: boolean
-          link: string | null
-          title: string
-          type: string
-          user_id: string
-        }
+          body: string | null;
+          created_at: string;
+          id: string;
+          is_read: boolean;
+          link: string | null;
+          title: string;
+          type: string;
+          user_id: string;
+        };
         Insert: {
-          body?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          link?: string | null
-          title: string
-          type: string
-          user_id: string
-        }
+          body?: string | null;
+          created_at?: string;
+          id?: string;
+          is_read?: boolean;
+          link?: string | null;
+          title: string;
+          type: string;
+          user_id: string;
+        };
         Update: {
-          body?: string | null
-          created_at?: string
-          id?: string
-          is_read?: boolean
-          link?: string | null
-          title?: string
-          type?: string
-          user_id?: string
-        }
+          body?: string | null;
+          created_at?: string;
+          id?: string;
+          is_read?: boolean;
+          link?: string | null;
+          title?: string;
+          type?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "notifications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "notifications_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       product_images: {
         Row: {
-          id: string
-          position: number
-          product_id: string
-          url: string
-        }
+          id: string;
+          position: number;
+          product_id: string;
+          url: string;
+        };
         Insert: {
-          id?: string
-          position?: number
-          product_id: string
-          url: string
-        }
+          id?: string;
+          position?: number;
+          product_id: string;
+          url: string;
+        };
         Update: {
-          id?: string
-          position?: number
-          product_id?: string
-          url?: string
-        }
+          id?: string;
+          position?: number;
+          product_id?: string;
+          url?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "product_images_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            foreignKeyName: "product_images_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       products: {
         Row: {
-          category_id: string
-          condition: string
-          created_at: string
-          description: string
-          id: string
-          is_sold: boolean
-          price: number
-          seller_id: string
-          title: string
-          updated_at: string
-        }
+          category_id: string;
+          condition: string;
+          created_at: string;
+          description: string;
+          id: string;
+          is_sold: boolean;
+          price: number;
+          seller_id: string;
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          category_id: string
-          condition: string
-          created_at?: string
-          description?: string
-          id?: string
-          is_sold?: boolean
-          price: number
-          seller_id: string
-          title: string
-          updated_at?: string
-        }
+          category_id: string;
+          condition: string;
+          created_at?: string;
+          description?: string;
+          id?: string;
+          is_sold?: boolean;
+          price: number;
+          seller_id: string;
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          category_id?: string
-          condition?: string
-          created_at?: string
-          description?: string
-          id?: string
-          is_sold?: boolean
-          price?: number
-          seller_id?: string
-          title?: string
-          updated_at?: string
-        }
+          category_id?: string;
+          condition?: string;
+          created_at?: string;
+          description?: string;
+          id?: string;
+          is_sold?: boolean;
+          price?: number;
+          seller_id?: string;
+          title?: string;
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "products_category_id_fkey"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
+            foreignKeyName: "products_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "products_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "products_seller_id_fkey";
+            columns: ["seller_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       profiles: {
         Row: {
-          avatar_url: string | null
-          bio: string | null
-          college: string | null
-          created_at: string
-          display_name: string
-          id: string
-          is_banned: boolean
-          updated_at: string
-        }
+          avatar_url: string | null;
+          bio: string | null;
+          college: string | null;
+          created_at: string;
+          display_name: string;
+          id: string;
+          is_banned: boolean;
+          updated_at: string;
+        };
         Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          college?: string | null
-          created_at?: string
-          display_name?: string
-          id: string
-          is_banned?: boolean
-          updated_at?: string
-        }
+          avatar_url?: string | null;
+          bio?: string | null;
+          college?: string | null;
+          created_at?: string;
+          display_name?: string;
+          id: string;
+          is_banned?: boolean;
+          updated_at?: string;
+        };
         Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          college?: string | null
-          created_at?: string
-          display_name?: string
-          id?: string
-          is_banned?: boolean
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          avatar_url?: string | null;
+          bio?: string | null;
+          college?: string | null;
+          created_at?: string;
+          display_name?: string;
+          id?: string;
+          is_banned?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       reports: {
         Row: {
-          created_at: string
-          details: string | null
-          id: string
-          reason: string
-          reporter_id: string
-          status: string
-          target_id: string
-          target_type: string
-        }
+          created_at: string;
+          details: string | null;
+          id: string;
+          reason: string;
+          reporter_id: string;
+          status: string;
+          target_id: string;
+          target_type: string;
+        };
         Insert: {
-          created_at?: string
-          details?: string | null
-          id?: string
-          reason: string
-          reporter_id: string
-          status?: string
-          target_id: string
-          target_type: string
-        }
+          created_at?: string;
+          details?: string | null;
+          id?: string;
+          reason: string;
+          reporter_id: string;
+          status?: string;
+          target_id: string;
+          target_type: string;
+        };
         Update: {
-          created_at?: string
-          details?: string | null
-          id?: string
-          reason?: string
-          reporter_id?: string
-          status?: string
-          target_id?: string
-          target_type?: string
-        }
+          created_at?: string;
+          details?: string | null;
+          id?: string;
+          reason?: string;
+          reporter_id?: string;
+          status?: string;
+          target_id?: string;
+          target_type?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "reports_reporter_id_fkey"
-            columns: ["reporter_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "reports_reporter_id_fkey";
+            columns: ["reporter_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       reviews: {
         Row: {
-          comment: string
-          created_at: string
-          id: string
-          product_id: string | null
-          rating: number
-          reviewer_id: string
-          seller_id: string
-        }
+          comment: string;
+          created_at: string;
+          id: string;
+          product_id: string | null;
+          rating: number;
+          reviewer_id: string;
+          seller_id: string;
+        };
         Insert: {
-          comment?: string
-          created_at?: string
-          id?: string
-          product_id?: string | null
-          rating: number
-          reviewer_id: string
-          seller_id: string
-        }
+          comment?: string;
+          created_at?: string;
+          id?: string;
+          product_id?: string | null;
+          rating: number;
+          reviewer_id: string;
+          seller_id: string;
+        };
         Update: {
-          comment?: string
-          created_at?: string
-          id?: string
-          product_id?: string | null
-          rating?: number
-          reviewer_id?: string
-          seller_id?: string
-        }
+          comment?: string;
+          created_at?: string;
+          id?: string;
+          product_id?: string | null;
+          rating?: number;
+          reviewer_id?: string;
+          seller_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "reviews_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            foreignKeyName: "reviews_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "reviews_reviewer_id_fkey"
-            columns: ["reviewer_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "reviews_reviewer_id_fkey";
+            columns: ["reviewer_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "reviews_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "reviews_seller_id_fkey";
+            columns: ["seller_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       user_roles: {
         Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          id?: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
+          id?: string;
+          role?: Database["public"]["Enums"]["app_role"];
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       wishlist: {
         Row: {
-          created_at: string
-          product_id: string
-          user_id: string
-        }
+          created_at: string;
+          product_id: string;
+          user_id: string;
+        };
         Insert: {
-          created_at?: string
-          product_id: string
-          user_id: string
-        }
+          created_at?: string;
+          product_id: string;
+          user_id: string;
+        };
         Update: {
-          created_at?: string
-          product_id?: string
-          user_id?: string
-        }
+          created_at?: string;
+          product_id?: string;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "wishlist_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
+            foreignKeyName: "wishlist_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "wishlist_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "wishlist_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       has_role: {
         Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-      is_email_verified: { Args: { _user_id: string }; Returns: boolean }
-    }
+          _role: Database["public"]["Enums"]["app_role"];
+          _user_id: string;
+        };
+        Returns: boolean;
+      };
+      is_email_verified: { Args: { _user_id: string }; Returns: boolean };
+    };
     Enums: {
-      app_role: "admin"
-    }
+      app_role: "admin";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
   EnumName extends (DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["CompositeTypes"] | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
 
 export const Constants = {
   public: {
@@ -570,4 +558,4 @@ export const Constants = {
       app_role: ["admin"],
     },
   },
-} as const
+} as const;

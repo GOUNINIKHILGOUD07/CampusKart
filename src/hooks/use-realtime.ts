@@ -14,13 +14,9 @@ export function useRealtimeConversations(userId: string | null) {
 
     const channel = supabase
       .channel(`conversations-${userId}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
-        () => {
-          queryClient.invalidateQueries({ queryKey: ["conversations"] });
-        },
-      )
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      })
       .subscribe();
 
     return () => {

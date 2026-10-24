@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
@@ -34,41 +33,43 @@ function PrivacyPage() {
         <section>
           <h2 className="text-lg font-bold tracking-tight">How we use it</h2>
           <p className="mt-2 text-muted-foreground">
-            Your details are used to show your profile to other students, run your listings, deliver messages between
-            buyers and sellers, and keep the marketplace safe. We do not sell your data, and we do not run ads.
+            Your details are used to show your profile to other students, run your listings, deliver
+            messages between buyers and sellers, and keep the marketplace safe. We do not sell your
+            data, and we do not run ads.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold tracking-tight">Who can see what</h2>
           <p className="mt-2 text-muted-foreground">
-            Your display name, college, bio and listings are visible to everyone browsing CampusKart. Your email stays
-            private — other students never see it. Chats are visible only to the two people in the conversation.
-            Moderators may view reports to resolve disputes and can ban accounts that break the rules.
+            Your display name, college, bio and listings are visible to everyone browsing
+            CampusKart. Your email stays private — other students never see it. Chats are visible
+            only to the two people in the conversation. Moderators may view reports to resolve
+            disputes and can ban accounts that break the rules.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold tracking-tight">Photos</h2>
           <p className="mt-2 text-muted-foreground">
-            Listing photos and avatars are stored securely and delivered only through expiring access links, so they
-            can't be scraped or hotlinked from outside CampusKart.
+            Listing photos and avatars are stored securely and delivered only through expiring
+            access links, so they can't be scraped or hotlinked from outside CampusKart.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold tracking-tight">Deleting your data</h2>
           <p className="mt-2 text-muted-foreground">
-            You can edit your profile in Settings at any time. To delete your account and its data entirely, contact us
-            and we will remove it.
+            You can edit your profile in Settings at any time. To delete your account and its data
+            entirely, contact us and we will remove it.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold tracking-tight">Payments</h2>
           <p className="mt-2 text-muted-foreground">
-            CampusKart never handles payments. Buyers and sellers settle in person with cash or UPI, so we never see or
-            store any card or bank details.
+            CampusKart never handles payments. Buyers and sellers settle in person with cash or UPI,
+            so we never see or store any card or bank details.
           </p>
         </section>
       </div>

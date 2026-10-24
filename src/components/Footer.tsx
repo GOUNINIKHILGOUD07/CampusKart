@@ -9,8 +9,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-              The student marketplace for textbooks, notes, lab records, stationery and
-              electronics.
+              The student marketplace for textbooks, notes, lab records, stationery and electronics.
             </p>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label="Footer">

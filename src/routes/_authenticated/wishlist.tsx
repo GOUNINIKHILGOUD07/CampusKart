@@ -15,7 +15,10 @@ export const Route = createFileRoute("/_authenticated/wishlist")({
       { title: "Wishlist · CampusKart" },
       { name: "description", content: "Items you saved on CampusKart, the student marketplace." },
       { property: "og:title", content: "Wishlist · CampusKart" },
-      { property: "og:description", content: "Items you saved on CampusKart, the student marketplace." },
+      {
+        property: "og:description",
+        content: "Items you saved on CampusKart, the student marketplace.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -40,21 +43,25 @@ function WishlistPage() {
         .order("created_at", { ascending: false })
         .limit(60);
       if (error) throw new Error(error.message);
-      return (data ?? []).map((r) => {
-        const row = r as unknown as {
-          product_id: string;
-          product: (ProductCardData & { category: { name: string } | null; images: { url: string }[] }) | null;
-        };
-        if (!row.product) return null;
-        return {
-          wishlistProductId: row.product_id,
-          card: {
-            ...row.product,
-            category_name: row.product.category?.name ?? null,
-            image_path: row.product.images?.[0]?.url ?? null,
-          } as ProductCardData,
-        };
-      }).filter((x): x is { wishlistProductId: string; card: ProductCardData } => !!x);
+      return (data ?? [])
+        .map((r) => {
+          const row = r as unknown as {
+            product_id: string;
+            product:
+              | (ProductCardData & { category: { name: string } | null; images: { url: string }[] })
+              | null;
+          };
+          if (!row.product) return null;
+          return {
+            wishlistProductId: row.product_id,
+            card: {
+              ...row.product,
+              category_name: row.product.category?.name ?? null,
+              image_path: row.product.images?.[0]?.url ?? null,
+            } as ProductCardData,
+          };
+        })
+        .filter((x): x is { wishlistProductId: string; card: ProductCardData } => !!x);
     },
   });
 

@@ -20,9 +20,15 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact us · CampusKart" },
-      { name: "description", content: "Get in touch with the CampusKart team about your account, a listing or a bug." },
+      {
+        name: "description",
+        content: "Get in touch with the CampusKart team about your account, a listing or a bug.",
+      },
       { property: "og:title", content: "Contact us · CampusKart" },
-      { property: "og:description", content: "Get in touch with the CampusKart team about your account, a listing or a bug." },
+      {
+        property: "og:description",
+        content: "Get in touch with the CampusKart team about your account, a listing or a bug.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -30,7 +36,13 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const TOPICS = ["Account help", "Problem with a listing", "Bug report", "Suggest an idea", "Something else"] as const;
+const TOPICS = [
+  "Account help",
+  "Problem with a listing",
+  "Bug report",
+  "Suggest an idea",
+  "Something else",
+] as const;
 
 function ContactPage() {
   const { userId } = useAuth();
@@ -55,9 +67,9 @@ function ContactPage() {
     setSending(true);
     // The support table is created with the schema; the generated client types
     // don't include it yet, so go through a narrow local type.
-    const from = supabase.from as unknown as (
-      table: string,
-    ) => { insert: (values: Record<string, unknown>) => Promise<{ error: { message: string } | null }> };
+    const from = supabase.from as unknown as (table: string) => {
+      insert: (values: Record<string, unknown>) => Promise<{ error: { message: string } | null }>;
+    };
     const inbox = from("support_messages");
     const { error } = await inbox.insert({
       user_id: userId ?? undefined,
@@ -89,10 +101,16 @@ function ContactPage() {
         <div className="mt-8 rounded-lg border bg-card p-6 text-center">
           <Mail className="mx-auto h-8 w-8 text-primary" aria-hidden="true" />
           <p className="mt-2 font-semibold">Message sent!</p>
-          <p className="mt-1 text-sm text-muted-foreground">Thanks for reaching out — we usually reply within a day or two.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Thanks for reaching out — we usually reply within a day or two.
+          </p>
         </div>
       ) : (
-        <form onSubmit={send} className="mt-8 flex flex-col gap-5 rounded-lg border bg-card p-6" aria-label="Contact form">
+        <form
+          onSubmit={send}
+          className="mt-8 flex flex-col gap-5 rounded-lg border bg-card p-6"
+          aria-label="Contact form"
+        >
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="contact-topic">What's it about?</Label>
             <Select value={topic} onValueChange={(v) => setTopic(v as (typeof TOPICS)[number])}>
@@ -109,7 +127,14 @@ function ContactPage() {
             </Select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="contact-email">Email {userId && <span className="font-normal text-muted-foreground">(optional — we have yours)</span>}</Label>
+            <Label htmlFor="contact-email">
+              Email{" "}
+              {userId && (
+                <span className="font-normal text-muted-foreground">
+                  (optional — we have yours)
+                </span>
+              )}
+            </Label>
             <Input
               id="contact-email"
               type="email"

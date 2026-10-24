@@ -14,9 +14,15 @@ export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
       { title: "Admin · CampusKart" },
-      { name: "description", content: "CampusKart moderation console: reports, listings and accounts." },
+      {
+        name: "description",
+        content: "CampusKart moderation console: reports, listings and accounts.",
+      },
       { property: "og:title", content: "Admin · CampusKart" },
-      { property: "og:description", content: "CampusKart moderation console: reports, listings and accounts." },
+      {
+        property: "og:description",
+        content: "CampusKart moderation console: reports, listings and accounts.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -76,7 +82,10 @@ function AdminPage() {
   });
 
   async function toggleBan(p: ProfileRow) {
-    const { error } = await supabase.from("profiles").update({ is_banned: !p.is_banned }).eq("id", p.id);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ is_banned: !p.is_banned })
+      .eq("id", p.id);
     if (error) {
       toast.error("Could not update the account.");
       return;
@@ -133,7 +142,10 @@ function AdminPage() {
         ) : profiles && profiles.length > 0 ? (
           <div className="mt-3 flex flex-col gap-2">
             {profiles.map((p) => (
-              <article key={p.id} className="flex items-center justify-between gap-3 rounded-lg border bg-card p-3">
+              <article
+                key={p.id}
+                className="flex items-center justify-between gap-3 rounded-lg border bg-card p-3"
+              >
                 <div className="min-w-0">
                   <p className="flex items-center gap-2 truncate text-sm font-semibold">
                     {p.display_name}
@@ -144,13 +156,22 @@ function AdminPage() {
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <span className="text-xs text-muted-foreground">Banned</span>
-                  <Switch checked={p.is_banned} onCheckedChange={() => toggleBan(p)} aria-label={`Ban ${p.display_name}`} />
+                  <Switch
+                    checked={p.is_banned}
+                    onCheckedChange={() => toggleBan(p)}
+                    aria-label={`Ban ${p.display_name}`}
+                  />
                 </div>
               </article>
             ))}
           </div>
         ) : (
-          <EmptyState icon={UserX} title="No members yet" description="New sign-ups will appear here." className="mt-3" />
+          <EmptyState
+            icon={UserX}
+            title="No members yet"
+            description="New sign-ups will appear here."
+            className="mt-3"
+          />
         )}
       </section>
     </div>

@@ -42,7 +42,10 @@ export const Route = createFileRoute("/product/$id")({
       { title: "Product · CampusKart" },
       { name: "description", content: "View this listing on CampusKart, the student marketplace." },
       { property: "og:title", content: "Product listing · CampusKart" },
-      { property: "og:description", content: "View this listing on CampusKart, the student marketplace." },
+      {
+        property: "og:description",
+        content: "View this listing on CampusKart, the student marketplace.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: params?.id ? "noindex" : "noindex" },
@@ -63,7 +66,13 @@ type ProductDetail = {
   seller_id: string;
   category_id: string;
   category: { name: string; slug: string } | null;
-  seller: { id: string; display_name: string; avatar_url: string | null; college: string | null; created_at: string } | null;
+  seller: {
+    id: string;
+    display_name: string;
+    avatar_url: string | null;
+    college: string | null;
+    created_at: string;
+  } | null;
   images: { id: string; url: string; position: number }[];
 };
 
@@ -154,7 +163,9 @@ function ProductPage() {
       await supabase.from("wishlist").delete().eq("user_id", userId).eq("product_id", product.id);
       toast.success("Removed from wishlist");
     } else {
-      const { error } = await supabase.from("wishlist").insert({ user_id: userId, product_id: product.id });
+      const { error } = await supabase
+        .from("wishlist")
+        .insert({ user_id: userId, product_id: product.id });
       if (error) {
         toast.error("Could not save to wishlist");
         return;
@@ -194,7 +205,10 @@ function ProductPage() {
 
   async function toggleSold() {
     if (!product) return;
-    const { error } = await supabase.from("products").update({ is_sold: !product.is_sold }).eq("id", product.id);
+    const { error } = await supabase
+      .from("products")
+      .update({ is_sold: !product.is_sold })
+      .eq("id", product.id);
     if (error) {
       toast.error("Could not update the listing.");
       return;
@@ -235,7 +249,9 @@ function ProductPage() {
     return (
       <div className="mx-auto max-w-6xl px-4 py-16 text-center">
         <h1 className="text-xl font-semibold">This listing doesn't exist</h1>
-        <p className="mt-2 text-sm text-muted-foreground">It may have been deleted by its seller.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          It may have been deleted by its seller.
+        </p>
         <Button asChild className="mt-4">
           <Link to="/browse">Browse products</Link>
         </Button>
@@ -292,7 +308,9 @@ function ProductPage() {
           </div>
           <h1 className="mt-2 text-2xl font-bold tracking-tight">{product.title}</h1>
           <p className="mt-1 text-2xl font-bold text-primary">{formatINR(product.price)}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Listed on {formatDate(product.created_at)}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Listed on {formatDate(product.created_at)}
+          </p>
 
           <div className="mt-4 flex flex-wrap gap-2">
             {!isOwner && !product.is_sold && (
@@ -302,7 +320,10 @@ function ProductPage() {
             )}
             {!isOwner && (
               <Button variant="outline" onClick={toggleWishlist}>
-                <Heart className={`mr-1.5 h-4 w-4 ${wishlisted ? "fill-primary text-primary" : ""}`} aria-hidden="true" />
+                <Heart
+                  className={`mr-1.5 h-4 w-4 ${wishlisted ? "fill-primary text-primary" : ""}`}
+                  aria-hidden="true"
+                />
                 {wishlisted ? "Saved" : "Save to wishlist"}
               </Button>
             )}
@@ -334,7 +355,8 @@ function ProductPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete this listing?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This permanently removes "{product.title}" and its photos. This cannot be undone.
+                        This permanently removes "{product.title}" and its photos. This cannot be
+                        undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -357,20 +379,26 @@ function ProductPage() {
           <h2 className="text-sm font-semibold">Seller</h2>
           <div className="mt-3 flex items-center gap-3 rounded-lg border bg-card p-3">
             <Avatar className="h-10 w-10">
-              {product.seller?.avatar_url && <AvatarImage src={product.seller.avatar_url} alt={product.seller.display_name} />}
+              {product.seller?.avatar_url && (
+                <AvatarImage src={product.seller.avatar_url} alt={product.seller.display_name} />
+              )}
               <AvatarFallback className="bg-secondary text-xs font-semibold">
                 {product.seller?.display_name.slice(0, 2).toUpperCase() ?? "S"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold">{product.seller?.display_name ?? "Unknown seller"}</p>
+              <p className="truncate text-sm font-semibold">
+                {product.seller?.display_name ?? "Unknown seller"}
+              </p>
               <p className="text-xs text-muted-foreground">
                 {product.seller?.college ? `${product.seller.college} · ` : ""}
                 Member since {product.seller ? formatDate(product.seller.created_at) : "—"}
               </p>
             </div>
             <Button asChild variant="outline" size="sm">
-              <Link to="/seller/$id" params={{ id: product.seller_id }}>View profile</Link>
+              <Link to="/seller/$id" params={{ id: product.seller_id }}>
+                View profile
+              </Link>
             </Button>
           </div>
 
@@ -381,7 +409,9 @@ function ProductPage() {
       </div>
 
       <section className="mt-12" aria-label="Similar listings">
-        <h2 className="text-lg font-bold tracking-tight">More in {product.category?.name ?? "this category"}</h2>
+        <h2 className="text-lg font-bold tracking-tight">
+          More in {product.category?.name ?? "this category"}
+        </h2>
         <SimilarProducts categoryId={product.category_id} excludeId={product.id} />
       </section>
     </div>
@@ -394,15 +424,24 @@ function SimilarProducts({ categoryId, excludeId }: { categoryId: string; exclud
     queryFn: async () => {
       const { data } = await supabase
         .from("products")
-        .select("id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)")
+        .select(
+          "id, title, price, condition, is_sold, created_at, category:categories(name), images:product_images(url)",
+        )
         .eq("category_id", categoryId)
         .eq("is_sold", false)
         .neq("id", excludeId)
         .order("created_at", { ascending: false })
         .limit(4);
       return (data ?? []).map((r) => {
-        const row = r as unknown as ProductCardData & { category: { name: string } | null; images: { url: string }[] };
-        return { ...row, category_name: row.category?.name ?? null, image_path: row.images?.[0]?.url ?? null };
+        const row = r as unknown as ProductCardData & {
+          category: { name: string } | null;
+          images: { url: string }[];
+        };
+        return {
+          ...row,
+          category_name: row.category?.name ?? null,
+          image_path: row.images?.[0]?.url ?? null,
+        };
       }) as ProductCardData[];
     },
   });

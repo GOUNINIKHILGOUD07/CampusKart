@@ -27,18 +27,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { timeAgo } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -91,7 +81,12 @@ function useUnreadNotificationCount() {
       .channel(`navbar-notif-${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${userId}`,
+        },
         () => queryClient.invalidateQueries({ queryKey: ["notifications"] }),
       )
       .subscribe();
@@ -152,7 +147,12 @@ function NotificationsBell() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative" aria-label={`Notifications (${unread} unread)`}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative"
+          aria-label={`Notifications (${unread} unread)`}
+        >
           <Bell className="h-5 w-5" aria-hidden="true" />
           {unread > 0 && (
             <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
@@ -184,13 +184,17 @@ function NotificationsBell() {
                 )}
               >
                 <p className="text-sm font-medium leading-snug">{n.title}</p>
-                {n.body && <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{n.body}</p>}
+                {n.body && (
+                  <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{n.body}</p>
+                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">{timeAgo(n.created_at)}</p>
               </button>
             ))}
           </div>
         ) : (
-          <p className="px-2 py-6 text-center text-sm text-muted-foreground">No notifications yet</p>
+          <p className="px-2 py-6 text-center text-sm text-muted-foreground">
+            No notifications yet
+          </p>
         )}
       </PopoverContent>
     </Popover>
@@ -211,7 +215,10 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Account menu">
+        <button
+          className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label="Account menu"
+        >
           <Avatar className="h-8 w-8">
             {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt={displayName} />}
             <AvatarFallback className="bg-secondary text-xs font-semibold text-secondary-foreground">
@@ -332,7 +339,9 @@ export function Navbar() {
                 <Link to="/auth">Log in</Link>
               </Button>
               <Button asChild size="sm">
-                <Link to="/auth" search={{ mode: "signup" }}>Sign up</Link>
+                <Link to="/auth" search={{ mode: "signup" }}>
+                  Sign up
+                </Link>
               </Button>
             </>
           )}
@@ -367,7 +376,11 @@ export function Navbar() {
                   {userId ? (
                     <div className="flex flex-col gap-1">
                       <Button asChild size="sm" className="justify-start">
-                        <Link to="/sell" onClick={() => setMobileOpen(false)} className="flex items-center gap-1.5">
+                        <Link
+                          to="/sell"
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-1.5"
+                        >
                           <Plus className="h-4 w-4" aria-hidden="true" /> Sell an Item
                         </Link>
                       </Button>
@@ -409,7 +422,11 @@ export function Navbar() {
                         </Link>
                       </Button>
                       <Button asChild>
-                        <Link to="/auth" search={{ mode: "signup" }} onClick={() => setMobileOpen(false)}>
+                        <Link
+                          to="/auth"
+                          search={{ mode: "signup" }}
+                          onClick={() => setMobileOpen(false)}
+                        >
                           Sign up
                         </Link>
                       </Button>

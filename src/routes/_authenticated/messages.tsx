@@ -58,22 +58,30 @@ function MessagesPage() {
     },
   });
 
-  const coverPaths = (conversations ?? []).map((c) => c.product?.images?.[0]?.url ?? "").filter(Boolean);
+  const coverPaths = (conversations ?? [])
+    .map((c) => c.product?.images?.[0]?.url ?? "")
+    .filter(Boolean);
   const urlMap = useSignedImageUrls(coverPaths);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold tracking-tight">Messages</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Chats about items you're buying or selling.</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Chats about items you're buying or selling.
+      </p>
 
       <section className="mt-6 flex flex-col gap-2" aria-label="Conversations">
         {isPending ? (
-          Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-20 w-full rounded-lg" />)
+          Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-lg" />
+          ))
         ) : conversations && conversations.length > 0 ? (
           conversations.map((c) => {
             const isBuyer = c.buyer_id === userId;
             const other = isBuyer ? c.seller : c.buyer;
-            const msgs = [...(c.messages ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
+            const msgs = [...(c.messages ?? [])].sort((a, b) =>
+              a.created_at.localeCompare(b.created_at),
+            );
             const last = msgs[msgs.length - 1];
             const unread = msgs.filter((m) => m.sender_id !== userId && !m.read_at).length;
             const coverPath = c.product?.images?.[0]?.url ?? null;
@@ -85,7 +93,11 @@ function MessagesPage() {
                 className="flex items-center gap-3 rounded-lg border bg-card p-3 transition-shadow hover:shadow-md"
               >
                 {coverPath ? (
-                  <SafeImage src={urlMap[coverPath] ?? null} alt="" className="h-12 w-12 shrink-0 rounded-md object-cover" />
+                  <SafeImage
+                    src={urlMap[coverPath] ?? null}
+                    alt=""
+                    className="h-12 w-12 shrink-0 rounded-md object-cover"
+                  />
                 ) : (
                   <div className="h-12 w-12 shrink-0 rounded-md bg-secondary" />
                 )}
@@ -101,7 +113,9 @@ function MessagesPage() {
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1">
-                  <span className="text-xs text-muted-foreground">{last ? timeAgo(last.created_at) : ""}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {last ? timeAgo(last.created_at) : ""}
+                  </span>
                   {unread > 0 && <Badge>{unread} new</Badge>}
                 </div>
               </Link>

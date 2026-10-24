@@ -71,7 +71,10 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
     },
   });
 
-  const existingPaths = useMemo(() => slots.map((s) => s.path).filter((p): p is string => !!p), [slots]);
+  const existingPaths = useMemo(
+    () => slots.map((s) => s.path).filter((p): p is string => !!p),
+    [slots],
+  );
   const signedMap = useSignedImageUrls(existingPaths);
 
   function addFiles(files: FileList | null) {
@@ -161,10 +164,13 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
         const keptRowIds = slots.filter((s) => s.rowId).map((s) => s.rowId!);
         const removedRows = listing.images.filter((img) => !keptRowIds.includes(img.id));
         if (removedRows.length > 0) {
-          await supabase.from("product_images").delete().in(
-            "id",
-            removedRows.map((r) => r.id),
-          );
+          await supabase
+            .from("product_images")
+            .delete()
+            .in(
+              "id",
+              removedRows.map((r) => r.id),
+            );
         }
         if (uploadedPaths.length > 0) {
           await supabase
@@ -231,7 +237,7 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
             updated_at: new Date().toISOString(),
             is_sold: false,
             images: imageUrls.map((url, i) => ({ id: `img-${i}`, url, position: i })),
-            category: cat ? { name: cat.name, slug: cat.slug } : undefined,
+            ...(cat ? { category: { name: cat.name, slug: cat.slug } } : {}),
             seller: {
               id: userId,
               display_name: "Student Seller",
@@ -254,7 +260,11 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex max-w-2xl flex-col gap-5" aria-label="Listing details">
+    <form
+      onSubmit={handleSubmit}
+      className="flex max-w-2xl flex-col gap-5"
+      aria-label="Listing details"
+    >
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="listing-title">Title</Label>
         <Input
@@ -314,7 +324,11 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
           />
         </div>
       </div>
-      {condition && <p className="-mt-3 text-xs text-muted-foreground">{CONDITION_DESCRIPTIONS[condition as keyof typeof CONDITION_DESCRIPTIONS]}</p>}
+      {condition && (
+        <p className="-mt-3 text-xs text-muted-foreground">
+          {CONDITION_DESCRIPTIONS[condition as keyof typeof CONDITION_DESCRIPTIONS]}
+        </p>
+      )}
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="listing-description">Description</Label>
@@ -342,9 +356,12 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
         />
         <div className="flex flex-wrap gap-3">
           {slots.map((slot) => (
-            <div key={slot.key} className="group relative h-24 w-24 overflow-hidden rounded-md border bg-muted">
+            <div
+              key={slot.key}
+              className="group relative h-24 w-24 overflow-hidden rounded-md border bg-muted"
+            >
               <SafeImage
-                src={slot.path ? signedMap[slot.path] ?? null : slot.preview}
+                src={slot.path ? (signedMap[slot.path] ?? null) : slot.preview}
                 alt=""
                 className="h-full w-full object-cover"
               />
@@ -370,7 +387,9 @@ export function ListingForm({ listing }: { listing?: ExistingListing }) {
             </button>
           )}
         </div>
-        <p className="text-xs text-muted-foreground">Clear photos sell faster. First photo becomes the cover.</p>
+        <p className="text-xs text-muted-foreground">
+          Clear photos sell faster. First photo becomes the cover.
+        </p>
       </div>
 
       <div>

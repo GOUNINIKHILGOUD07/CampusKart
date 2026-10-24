@@ -17,7 +17,10 @@ export const Route = createFileRoute("/_authenticated/notifications")({
       { title: "Notifications · CampusKart" },
       { name: "description", content: "New messages, listings and account updates on CampusKart." },
       { property: "og:title", content: "Notifications · CampusKart" },
-      { property: "og:description", content: "New messages, listings and account updates on CampusKart." },
+      {
+        property: "og:description",
+        content: "New messages, listings and account updates on CampusKart.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -83,7 +86,9 @@ function NotificationsPage() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Updates about your chats and listings.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Updates about your chats and listings.
+          </p>
         </div>
         {unread.length > 0 && (
           <Button variant="outline" size="sm" onClick={markAllRead}>
@@ -94,7 +99,9 @@ function NotificationsPage() {
 
       <section className="mt-6 flex flex-col gap-2" aria-label="Notifications">
         {isPending ? (
-          Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-lg" />)
+          Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full rounded-lg" />
+          ))
         ) : notifications && notifications.length > 0 ? (
           notifications.map((n) => (
             <button

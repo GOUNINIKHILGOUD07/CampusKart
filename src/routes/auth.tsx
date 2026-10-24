@@ -24,7 +24,11 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in · CampusKart" },
-      { name: "description", content: "Sign in or create your CampusKart student account to buy and sell campus essentials." },
+      {
+        name: "description",
+        content:
+          "Sign in or create your CampusKart student account to buy and sell campus essentials.",
+      },
       { property: "og:title", content: "Sign in · CampusKart" },
       { property: "og:description", content: "Sign in or create your CampusKart student account." },
       { property: "og:type", content: "website" },
@@ -38,9 +42,11 @@ const PENDING_KEY = "ck:post-auth-redirect";
 
 function friendlyAuthError(message: string): string {
   if (message.includes("Invalid login credentials")) return "Incorrect email or password.";
-  if (message.includes("already registered")) return "An account with this email already exists. Try signing in instead.";
+  if (message.includes("already registered"))
+    return "An account with this email already exists. Try signing in instead.";
   if (message.includes("Password should be at least")) return message;
-  if (message.includes("ability to sign in is disabled")) return "Signing in is temporarily unavailable. Please try again later.";
+  if (message.includes("ability to sign in is disabled"))
+    return "Signing in is temporarily unavailable. Please try again later.";
   return message;
 }
 
@@ -87,7 +93,9 @@ function AuthPage() {
   async function handleSocial(provider: "google" | "lovable") {
     const socialRedirect = safeRedirectPath(redirectParam);
     if (socialRedirect) sessionStorage.setItem(PENDING_KEY, socialRedirect);
-    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin,
+    });
     await afterSocialStart(result as { error?: unknown });
   }
 
@@ -160,14 +168,29 @@ function AuthPage() {
               <form onSubmit={handleSignIn} className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="signin-email">Email</Label>
-                  <Input id="signin-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+                  <Input
+                    id="signin-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                  />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="signin-password">Password</Label>
-                  <Input id="signin-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
+                  <Input
+                    id="signin-password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                  />
                 </div>
                 <Button type="submit" disabled={submitting}>
-                  {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />} Sign in
+                  {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}{" "}
+                  Sign in
                 </Button>
               </form>
             </TabsContent>
@@ -175,18 +198,38 @@ function AuthPage() {
               <form onSubmit={handleSignUp} className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="signup-name">Display name (optional)</Label>
-                  <Input id="signup-name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                  <Input
+                    id="signup-name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="signup-email">Email</Label>
-                  <Input id="signup-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+                  <Input
+                    id="signup-email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                  />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="signup-password">Password</Label>
-                  <Input id="signup-password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+                  <Input
+                    id="signup-password"
+                    type="password"
+                    required
+                    minLength={6}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="new-password"
+                  />
                 </div>
                 <Button type="submit" disabled={submitting}>
-                  {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />} Create account
+                  {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}{" "}
+                  Create account
                 </Button>
               </form>
             </TabsContent>
