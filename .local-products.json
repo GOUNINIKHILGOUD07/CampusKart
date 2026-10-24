@@ -1,0 +1,32 @@
+[
+  {
+    "id": "local-f8faf36f-aa15-40f4-88d7-be8c39784fe2",
+    "seller_id": "166c4d1f-f3ca-462b-b6a4-287b012adbfd",
+    "category_id": "a9080ca9-f12f-4f13-8d2c-3ce33dd86bab",
+    "title": "bag",
+    "condition": "Like New",
+    "price": 567,
+    "description": "",
+    "created_at": "2026-10-24T10:13:39.194Z",
+    "updated_at": "2026-10-24T10:13:39.194Z",
+    "is_sold": false,
+    "images": [
+      {
+        "id": "img-0",
+        "url": "product-images/166c4d1f-f3ca-462b-b6a4-287b012adbfd/56f1138d-092e-4086-b3ac-9fbf6c1e1587.png",
+        "position": 0
+      }
+    ],
+    "category": {
+      "name": "Other",
+      "slug": "other"
+    },
+    "seller": {
+      "id": "166c4d1f-f3ca-462b-b6a4-287b012adbfd",
+      "display_name": "Student Seller",
+      "avatar_url": null,
+      "college": "Campus Member",
+      "created_at": "2026-10-24T10:13:39.194Z"
+    }
+  }
+]
